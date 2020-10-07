@@ -16,7 +16,7 @@ manufacturing_date date
 
 
 ALTER TABLE training_zs.products  ADD PRIMARY KEY (id); 
-DROP TABLE IF EXISTS sales;
+DROP TABLE IF EXISTS training_zs.sales;
 
 
 
