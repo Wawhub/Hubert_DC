@@ -6,7 +6,7 @@ CREATE SCHEMA expense_tracker;
  owner_name varchar(50) NOT NULL ,
  owner_desc varchar(250),
  user_login integer NOT NULL,
- active varchar(1) DEFAULT 1 NOT NULL  ,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
  );
@@ -17,8 +17,8 @@ CREATE SCHEMA expense_tracker;
  id_ba_type integer PRIMARY KEY,
  ba_type varchar(50) NOT NULL ,
  ba_desc varchar(250),
- active varchar(1) DEFAULT 1 NOT NULL  ,
- is_common_account varchar(1) DEFAULT 0 NOT NULL  ,
+ active boolean DEFAULT true NOT NULL  ,
+ is_common_account boolean DEFAULT false NOT NULL  ,
  id_ba_own integer,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.transaction_bank_accounts(
  id_ba_typ integer,
  bank_account_name varchar(50) NOT NULL ,
  bank_account_desc varchar(250),
- active varchar(1) DEFAULT 1 NOT NULL  ,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
  );
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.transaction_category(
  id_trans_cat integer PRIMARY KEY ,
  category_name varchar(50) NOT NULL,
  category_description varchar(250),
- active varchar(1) DEFAULT 1 NOT NULL,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
   );
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.transaction_subcategory(
  id_trans_cat integer,
  subcategory_name varchar(50) NOT NULL,
  subcategory_description varchar(250),
- active varchar(1) DEFAULT 1 NOT NULL,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
  );
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.transaction_subcategory(
  id_trans_type integer PRIMARY KEY,
  transaction_type varchar(50) NOT NULL ,
  transaction_type_desc varchar(250),
- active varchar(1) DEFAULT 1 NOT NULL  ,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
  );
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.users(
  user_name varchar(50) NOT NULL ,
  user_password varchar(100) NOT NULL ,
  password_salt varchar(100) NOT NULL ,
- active varchar(1) DEFAULT 1 NOT NULL  ,
+ active boolean DEFAULT true NOT NULL  ,
  insert_date timestamp DEFAULT (current_timestamp),
  update_date timestamp DEFAULT (current_timestamp)
  );
