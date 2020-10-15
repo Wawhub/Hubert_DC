@@ -1,57 +1,57 @@
 
---1.Korzystaj¹c ze sk³adni CREATE ROLE, stwórz nowego u¿ytkownika o nazwie user_training z
---mo¿liwoœci¹ zalogowania siê do bazy danych i has³em silnym
+--1.Korzystajac ze skladni CREATE ROLE, stwÃ³rz nowego uzytkownika o nazwie user_training z
+--mozliwoscia zalogowania siÃª do bazy danych i haslem silnym
 DROP ROLE IF EXISTS user_training;
 CREATE ROLE user_training WITH LOGIN PASSWORD '1sniegnadywanie!';
 
 
---2.Korzystaj¹c z atrybutu AUTHORIZATION dla sk³adni CREATE SCHEMA. Utwórz schemat
---training, którego w³aœcicielem bêdzie u¿ytkownik user_training.
+--2.Korzystajac z atrybutu AUTHORIZATION dla skladni CREATE SCHEMA. UtwÃ³rz schemat
+--training, ktÃ³rego wlascicielem bedzie uzytkownik user_training.
 DROP SCHEMA IF EXISTS training ;
 CREATE SCHEMA training AUTHORIZATION user_training;
 
 
---3.Bêd¹c zalogowany na super u¿ytkowniku postgres, spróbuj usun¹æ rolê (u¿ytkownika)user_training.
+--3.Bedac zalogowany na super uzytkowniku postgres, sprÃ³buj usunac role (uzytkownika)user_training.
 DROP ROLE user_training;
---nie mo¿na usun¹æ, poniewa¿ istniej¹ obiekty zale¿ne
+--nie mozna usunac, poniewaz istnieja obiekty zalezne
 
 
---4.Przeka¿ w³asnoœæ nad utworzonym dla / przez u¿ytkownika user_training obiektami na role postgres. Nastêpnie usuñ role user_training.
+--4.Przekaz wlasnosc nad utworzonym dla / przez uzytkownika user_training obiektami na role postgres. Nastepnie usun role user_training.
 REASSIGN OWNED BY user_training TO postgres;
 DROP OWNED BY user_training;
 DROP ROLE user_training;
 
 
---5.Utwórz now¹ rolê reporting_ro, która bêdzie grup¹ dostêpów, dla u¿ytkowników warstwy analitycznej o nastêpuj¹cych przywilejach:
--- dostêp do bazy, schematu, tworzenia obiektów w schemacie training oraz dostêp do wszystkich uprawnieñ do tabel w schemacie training
+--5.UtwÃ³rz nowa role reporting_ro, ktÃ³ra bedzie grupa dostepÃ³w, dla uzytkownikÃ³w warstwy analitycznej o nastepujacych przywilejach:
+-- dostep do bazy, schematu, tworzenia obiektÃ³w w schemacie training oraz dostep do wszystkich uprawnien do tabel w schemacie training
 CREATE ROLE reporting_ro;
 GRANT CONNECT ON DATABASE postgres TO reporting_ro;
 GRANT CREATE,USAGE ON SCHEMA training TO reporting_ro;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA training TO reporting_ro;
 
 
---6.Utwórz nowego u¿ytkownika reporting_user z mo¿liwoœci¹ logowania siê do bazy danych i
---haœle silnym :) (coœ wymyœl). Przypisz temu u¿ytkownikowi role reporting ro
+--6.UtwÃ³rz nowego uzytkownika reporting_user z mozliwoÅ“cia logowania sie do bazy danych i
+--hasle silnym. Przypisz temu uzytkownikowi role reporting ro
 CREATE ROLE reporting_user WITH LOGIN PASSWORD '1sniegnadywanie!';
 GRANT reporting_ro TO reporting_user;
 
 
---7.Bêd¹c zalogowany na u¿ytkownika reporting_user, spróbuj utworzyæ now¹ tabele (dowoln¹) w schemacie training.
+--7.Bedac zalogowany na uzytkownika reporting_user, sprÃ³buj utworzyc nowa tabele (dowolna) w schemacie training.
 DROP TABLE IF EXISTS training.nowa;
 CREATE TABLE training.nowa (id Integer);
---uda³o siê utworzyæ
+--udalo sie utworzyc
 
 
---8.Zabierz uprawnienia roli reporting_ro do tworzenia obiektów w schemacie training
+--8.Zabierz uprawnienia roli reporting_ro do tworzenia obiektÃ³w w schemacie training
 REVOKE CREATE ON SCHEMA training FROM reporting_ro;
 
 
---9.Zaloguj siê ponownie na u¿ytkownika reporting_user, sprawdŸ czy mo¿esz utworzyæ now¹
---tabelê w schemacie training oraz czy mo¿esz tak¹ tabelê utworzyæ w schemacie public.
+--9.Zaloguj sie ponownie na uzytkownika reporting_user, sprawdz czy mozesz utworzyc nowa
+--tabele w schemacie training oraz czy mozesz taka tabele utworzyc w schemacie public.
 CREATE TABLE training.test (id Integer);
---odmowa dostêpu
+--odmowa dostepu
 CREATE TABLE public.test (id Integer);
---odmowa dostêpu
+--odmowa dostepu
 
 
 
