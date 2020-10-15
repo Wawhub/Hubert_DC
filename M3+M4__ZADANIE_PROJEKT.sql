@@ -1,44 +1,44 @@
---Zadanie projektowe Modu³ 3 oraz 4
+--Zadanie projektowe Modul 3 oraz 4
 
 
 
---1.Stwórz nowego u¿ytkownika o nazwie expense_tracker_user z mo¿liwoœci¹ zalogowania siê do bazy danych i has³em silnym 
+--1.StwÃ³rz nowego uzytkownika o nazwie expense_tracker_user z mozliwoscia zalogowania sie do bazy danych i haslem silnym 
 DROP ROLE IF EXISTS expense_tracker_user;
 CREATE ROLE expense_tracker_user WITH LOGIN PASSWORD '1sniegnadywanie!';
 
 
---2.. Korzystaj¹c ze sk³adni REVOKE, odbierz uprawnienia tworzenia obiektów w schemacie
+--2.. Korzystajac ze skladni REVOKE, odbierz uprawnienia tworzenia obiektÃ³w w schemacie
 --public roli PUBLIC
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 
 
---3.3. Je¿eli w Twoim œrodowisku istnieje ju¿ schemat expense_tracker (z obiektami tabel) usuñ
---go korzystaj¹c z polecenie DROP CASCADE.
+--3.3. Jezeli w Twoim srodowisku istnieje juz schemat expense_tracker (z obiektami tabel) usuÃ±
+--go korzystajÂ¹c z polecenie DROP CASCADE.
 DROP SCHEMA IF EXISTS expense_tracker CASCADE;
 
 
---Element pozwalaj¹cy odtwarzaæ strukturê bazy
+--Element pozwalajacy odtwarzac strukture bazy
 REASSIGN OWNED BY expense_tracker_group TO postgres;
 DROP OWNED BY expense_tracker_group;
 
 
---4.Utwórz now¹ rolê expense_tracker_group.
+--4.UtwÃ³rz nowa role expense_tracker_group.
 DROP ROLE IF EXISTS expense_tracker_group;
 CREATE ROLE expense_tracker_group;
 
 
---5.Utwórz schemat expense_tracker, korzystaj¹c z atrybutu AUTHORIZATION, ustalaj¹c
---w³asnoœæna rolê expense_tracker_group.
+--5.UtwÃ³rz schemat expense_tracker, korzystajac z atrybutu AUTHORIZATION, ustalajac
+--wÂ³asnoÅ“Ã¦na rolÃª expense_tracker_group.
 DROP SCHEMA IF EXISTS expense_tracker CASCADE;
 CREATE SCHEMA expense_tracker AUTHORIZATION expense_tracker_group;
 
 
---6. Dla roli expense_tracker_group dodaj przywilej ³¹czenia do bazy danych postgres i dodaj wszystkie przywileje do schematu expense_tracker
+--6. Dla roli expense_tracker_group dodaj przywilej laczenia do bazy danych postgres i dodaj wszystkie przywileje do schematu expense_tracker
 GRANT CONNECT ON DATABASE postgres TO expense_tracker_group;
 GRANT ALL PRIVILEGES ON SCHEMA expense_tracker TO expense_tracker_group ;
 
 
---7.Dodaj rolê expense_tracker_group u¿ytkownikowi expense_tracker_user
+--7.Dodaj role expense_tracker_group uzytkownikowi expense_tracker_user
 GRANT expense_tracker_group TO expense_tracker_user;
 
 
