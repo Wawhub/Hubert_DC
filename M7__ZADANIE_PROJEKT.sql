@@ -55,7 +55,7 @@ WITH formula AS (
            tc.category_name
       FROM expense_tracker.transactions t
       JOIN expense_tracker.transaction_category tc ON tc.id_trans_cat = t.id_trans_cat
-     WHERE tc.category_name LIKE 'JEDZENIE'
+     WHERE tc.category_name = 'JEDZENIE'
        AND EXTRACT(YEAR FROM t.transaction_date)=2016
        AND t.id_trans_subcat = -1
 )
